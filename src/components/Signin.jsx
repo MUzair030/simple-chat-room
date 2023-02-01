@@ -2,8 +2,9 @@ import {auth, googleProvider} from "../firebase-config";
 import {signInWithEmailAndPassword, signInWithPopup} from "firebase/auth";
 import {useState} from "react";
 import Cookies from 'universal-cookie';
-import {Box, Stack, Button} from "@mui/material";
+import {Box, Stack, Button, Grid} from "@mui/material";
 import {Input} from '@mui/joy';
+import GoogleIcon from '@mui/icons-material/Google';
 
 const cookies = new Cookies();
 
@@ -70,15 +71,30 @@ const Signin = (props) => {
                             sx={{ mb: 1 }} />
                     </div>
                     <Button type="submit"
-                            sx={{color:"white", background:"blue", '&:hover':{color:"blue", background:"lightblue"}}}>
+                            sx={{color:"white", background:"blue", marginTop:"15px",
+                                '&:hover':{color:"blue", background:"lightblue"}}}>
                         Login</Button>
                 </Stack>
             </form>
+
+            <Grid container sx={{alignItems:"center"}}>
+                <Grid xs={5}>
+                    <hr/>
+                </Grid>
+                <Grid xs={2}>
+                    <p>or</p>
+                </Grid>
+                <Grid xs={5}>
+                    <hr/>
+                </Grid>
+            </Grid>
+
               <Button onClick={handleGoogleSignIn}
-              sx={{width:"100%",
-                  marginTop:"5px",
+              sx={{
+                  width:"100%",
                   color:"white", background:"red",
                   '&:hover':{color:"red", background:"light-red"}}}>
+                  <GoogleIcon />
                   Signin with Google
               </Button>
 
