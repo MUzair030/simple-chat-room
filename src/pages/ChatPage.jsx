@@ -3,6 +3,7 @@ import {Textarea} from "@mui/joy";
 import {Firestore} from "firebase/firestore";
 import SendIcon from '@mui/icons-material/Send';
 import {useParams} from "react-router-dom";
+import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 
 const ChatPage = (props) => {
 
@@ -10,26 +11,47 @@ const ChatPage = (props) => {
 
 
     return(
-        <Box
-            sx={{borderRadius:"10px", width:"900px", height:"600px",
-                textAlign:"center", margin:"auto", background:"white"}}>
-            <Stack
-                direction="column">
-                <h2>#{roomName}</h2>
-                <Stack
-                    direction="row">
-                    <Textarea
-                        sx={{borderRadius:"50px", width:"800px"}}
-                        placeholder="Type Something..."/>
-                    <IconButton
-                        type="success"
-                        sx={{borderRadius:"30px"}}>
-                        <SendIcon />
-                    </IconButton>
-                </Stack>
+        <div style={{
+            width:"100%",
+            position:"absolute",
+            top:"50%",
+            left:"50%",
+            transform:"translate(-50%, -50%)"
 
-            </Stack>
-        </Box>
+        }}>
+            <Box
+                sx={{borderRadius:"10px", width:"900px", height:"600px",
+                    textAlign:"center", margin:"auto", background:"white"}}>
+                <Stack
+                    direction="column">
+                    <h2>#{roomName}</h2>
+
+                    {/*messages area*/}
+                    <Stack
+                        m={2}
+                        sx={{height:"400px", border:"1px solid red"}}>
+
+                    </Stack>
+
+                    {/*type message area*/}
+                    <Stack
+                        p={2}
+                        direction="row">
+                        <IconButton>
+                            <EmojiEmotionsOutlinedIcon />
+                        </IconButton>
+
+                        <Textarea
+                            sx={{borderRadius:"50px", width:"800px"}}
+                            placeholder="Type Something..."/>
+                        <IconButton>
+                            <SendIcon />
+                        </IconButton>
+                    </Stack>
+
+                </Stack>
+            </Box>
+        </div>
     );
 }
 

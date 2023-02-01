@@ -10,14 +10,12 @@ const cookies = new Cookies();
 function HomePage() {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(cookies.get("auth-token"));
-    // const [selectedRoom, setSelectedRoom] = useState(null);
 
     const handleSetIsLogin = (val)=>{
         setIsLogin(val);
     }
     const handleSetChatRoom = (roomName) => {
         console.log(roomName)
-        // setSelectedRoom(roomName)
         navigate(`/chat/${roomName}`);
     }
 
