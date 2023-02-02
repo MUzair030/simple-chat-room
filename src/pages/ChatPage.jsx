@@ -1,14 +1,35 @@
 import {Box, Button, Stack, IconButton} from "@mui/material";
 import {Textarea} from "@mui/joy";
-import {Firestore} from "firebase/firestore";
 import SendIcon from '@mui/icons-material/Send';
 import {useParams} from "react-router-dom";
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
+import {useState} from "react";
+import {addDoc, collection, serverTimestamp} from "firebase/firestore";
+import {app, db, auth} from "../firebase-config";
+import {MessageFeed} from "../components";
 
 const ChatPage = (props) => {
 
     const {roomName} = useParams();
+    let messageRef = collection(db, roomName);
 
+    const [newMsg, setNewMsg] = useState("");
+
+    const handleSendMessage = async (e) => {
+        try{
+            if(newMsg !== "" || '\n' || '\n\n'){
+                await addDoc(messageRef, {
+                    text: newMsg,
+                    user: auth.currentUser.email,
+                    createdAt: new Date()
+                });
+                setNewMsg("");
+            }
+        }
+        catch (e) {
+            console.error(e)
+        }
+    }
 
     return(
         <div style={{
@@ -25,15 +46,14 @@ const ChatPage = (props) => {
                 <Stack
                     direction="column">
                     <h2>#{roomName}</h2>
+                    <div>
+                        <hr/>
+                    </div>
 
                     {/*messages area*/}
-                    <Stack
-                        m={2}
-                        sx={{height:"400px", border:"1px solid red"}}>
+                    <MessageFeed roomName={roomName} />
 
-                    </Stack>
-
-                    {/*type message area*/}
+                    {/*type new message area*/}
                     <Stack
                         p={2}
                         direction="row">
@@ -43,8 +63,10 @@ const ChatPage = (props) => {
 
                         <Textarea
                             sx={{borderRadius:"50px", width:"800px"}}
-                            placeholder="Type Something..."/>
-                        <IconButton>
+                            placeholder="Type Something..."
+                            onChange={(e)=>setNewMsg(e.target.value)} />
+                        <IconButton
+                            onClick={handleSendMessage} >
                             <SendIcon />
                         </IconButton>
                     </Stack>
