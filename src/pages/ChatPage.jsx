@@ -24,7 +24,8 @@ const ChatPage = (props) => {
             navigate(`/auth`);
         }
     }, [isLogin]);
-    const handleSendMessage = async (e) => {
+
+    const handleSendMessage = async () => {
         try{
             // if(newMsg !== "" && newMsg !== '\n' && newMsg !== '\n\n' && newMsg !== " " && newMsg !== null){
             if(newMsg !== ""){
@@ -39,7 +40,14 @@ const ChatPage = (props) => {
         catch (e) {
             console.error(e)
         }
-    }
+    };
+
+    const handleKeyDown = async(e)=> {
+        console.log("e.key ::: ",e.key)
+        if(e.key === 'Enter'){
+            await handleSendMessage();
+        }
+    };
 
     return(
         <div style={{
@@ -72,7 +80,8 @@ const ChatPage = (props) => {
                         </IconButton>
 
                         <Textarea
-                            sx={{borderRadius:"50px", width:"800px"}}
+                            onKeyPress={handleKeyDown}
+                            sx={{borderRadius:"50px", width:"800px", maxHeight:"60px", }}
                             placeholder="Type Something..."
                             onChange={(e)=>setNewMsg(e.target.value)}
                             value={newMsg}
