@@ -7,7 +7,9 @@ const Navbar = () => {
     return(
         <Box
             sx={{border:"none",
-                background: "linear-gradient(0deg, rgba(34,195,142,1) 0%, rgba(253,187,45,1) 100%)"}}>
+                // background: "linear-gradient(236deg, rgba(170,255,227,1) 0%, rgba(25,183,245,1) 100%)"
+                background: "#27BEF4"
+            }}>
             <Grid container  sx={{alignItems:"center"}}>
                 <Grid xs={3}>
 
