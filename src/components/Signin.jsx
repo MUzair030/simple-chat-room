@@ -13,6 +13,7 @@ const Signin = (props) => {
     const {handleSignup, handleSetIsLogin} = props;
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleGoogleSignIn = async () =>{
         try{
@@ -29,7 +30,7 @@ const Signin = (props) => {
         e.preventDefault();
         try{
             const result = await signInWithEmailAndPassword(auth, email, password);
-            cookies.set("auth-token", result.user.refreshToken);
+            cookies.set("auth-token", result.user.refreshToken, {path:"/"});
             handleSetIsLogin(true);
         }
         catch (e) {
@@ -44,7 +45,7 @@ const Signin = (props) => {
             p={3}
             sx={{border: "none", borderRadius:"10px",
                 backgroundColor:"white", verticalAlign:"middle",
-                width:"350px", height:"400px", margin:"auto", textAlign:"center"}}>
+                width:"350px", height:"420px", margin:"auto", textAlign:"center"}}>
 
             <h3>Sign in your Account</h3>
             <form
@@ -65,11 +66,16 @@ const Signin = (props) => {
                         style={{textAlign:"left"}}>
                         <label>Password:</label>
                         <Input
+                            type={showPassword ? "text" : "password"}
                             onChange={(e)=>setPassword(e.target.value)}
                             placeholder="Your Password"
                             required
                             sx={{ mb: 1 }} />
                     </div>
+                    <Stack direction="row" m={0}>
+                        <input type="checkbox" onClick={()=>{setShowPassword(!showPassword)}} />
+                        <p style={{textAlign:"left", color: "gray", fontSize:"10px"}}>Show Password</p>
+                    </Stack>
                     <Button type="submit"
                             sx={{color:"white", background:"blue", marginTop:"15px",
                                 '&:hover':{color:"blue", background:"lightblue"}}}>

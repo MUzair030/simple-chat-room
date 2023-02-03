@@ -1,21 +1,31 @@
-import {Box, Button, Stack, IconButton} from "@mui/material";
+import {Box, Stack, IconButton} from "@mui/material";
 import {Textarea} from "@mui/joy";
 import SendIcon from '@mui/icons-material/Send';
 import {useParams} from "react-router-dom";
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
-import {useState} from "react";
-import {addDoc, collection, serverTimestamp} from "firebase/firestore";
-import {app, db, auth} from "../firebase-config";
+import {useState, useContext, useEffect} from "react";
+import {addDoc, collection} from "firebase/firestore";
+import {db, auth} from "../firebase-config";
 import {MessageFeed} from "../components";
+import {userLoginContext} from "../contexts/userLoginContext";
+import {useNavigate} from "react-router-dom";
 
 const ChatPage = (props) => {
 
     const {roomName} = useParams();
+    const navigate = useNavigate();
     let messageRef = collection(db, roomName);
 
     const [newMsg, setNewMsg] = useState("");
+    const {isLogin} = useContext(userLoginContext);
 
-    const handleSendMessage = async (e) => {
+    useEffect(()=>{
+        if(!isLogin){
+            navigate(`/auth`);
+        }
+    }, [isLogin, navigate]);
+
+    const handleSendMessage = async () => {
         try{
             // if(newMsg !== "" && newMsg !== '\n' && newMsg !== '\n\n' && newMsg !== " " && newMsg !== null){
             if(newMsg !== ""){
@@ -30,7 +40,14 @@ const ChatPage = (props) => {
         catch (e) {
             console.error(e)
         }
-    }
+    };
+
+    const handleKeyDown = async(e)=> {
+        console.log("e.key ::: ",e.key)
+        if(e.key === 'Enter'){
+            await handleSendMessage();
+        }
+    };
 
     return(
         <div style={{
@@ -63,7 +80,8 @@ const ChatPage = (props) => {
                         </IconButton>
 
                         <Textarea
-                            sx={{borderRadius:"50px", width:"800px"}}
+                            onKeyPress={handleKeyDown}
+                            sx={{borderRadius:"50px", width:"800px", maxHeight:"60px", }}
                             placeholder="Type Something..."
                             onChange={(e)=>setNewMsg(e.target.value)}
                             value={newMsg}
