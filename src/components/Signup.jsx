@@ -13,6 +13,7 @@ const Signup = (props) => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const [confirmPassword, setConfirmPassword] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleEmailPasswordSignUp = async (e) =>{
         e.preventDefault();
@@ -55,6 +56,7 @@ const Signup = (props) => {
                           style={{textAlign:"left"}}>
                           <label>Password:</label>
                           <Input
+                              type={showPassword ? "text" : "password"}
                               onChange={(e)=>setPassword(e.target.value)}
                               placeholder="Type a Password"
                               required
@@ -64,11 +66,16 @@ const Signup = (props) => {
                           style={{textAlign:"left"}}>
                           <label>Confirm Password:</label>
                           <Input
+                              type={showPassword ? "text" : "password"}
                               onChange={(e)=>setConfirmPassword(e.target.value)}
                               placeholder="Confirm Password"
                               required
                               sx={{ mb: 1 }} />
                       </div>
+                      <Stack direction="row" m={0}>
+                          <input type="checkbox" onClick={()=>{setShowPassword(!showPassword)}} />
+                          <p style={{textAlign:"left", color: "gray", fontSize:"10px"}}>Show Password</p>
+                      </Stack>
 
                   <Button type="submit"
                           sx={{color:"white", background:"blue", marginTop:"15px",
