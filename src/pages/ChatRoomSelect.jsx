@@ -1,9 +1,13 @@
 import {Box, Button, Stack, InputLabel, MenuItem, FormControl, Select, Grid} from "@mui/material";
 import {Input} from "@mui/joy";
-import {useState} from "react";
+import {useState, useContext, useEffect} from "react";
+import {useNavigate} from "react-router-dom";
+import {userLoginContext} from "../contexts/userLoginContext";
 
 const ChatRoomSelect = (props) => {
     const {handleSetChatRoom} = props;
+    const navigate = useNavigate();
+    const {isLogin} = useContext(userLoginContext);
 
     const [roomName, setRoomName] = useState(null);
     const [age, setAge] = useState('');
@@ -16,6 +20,12 @@ const ChatRoomSelect = (props) => {
     const handleChange = (event) => {
         setAge(event.target.value);
     };
+
+    useEffect(()=>{
+        if(!isLogin){
+            navigate('/auth');
+        }
+    },[isLogin])
 
     return(
         <div style={{width:"100%",

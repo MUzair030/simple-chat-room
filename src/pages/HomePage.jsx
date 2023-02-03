@@ -1,15 +1,14 @@
 // import './App.css';
 import {AuthPage, ChatPage, ChatRoomSelect} from "./index";
-import {Navbar} from "../components";
-import {useEffect, useState} from "react";
+// import {Navbar} from "../components";
+import {useEffect, useContext} from "react";
 import Cookies from "universal-cookie";
 import {useNavigate} from "react-router-dom";
-
-const cookies = new Cookies();
+import {userLoginContext} from "../contexts/userLoginContext";
 
 function HomePage() {
     const navigate = useNavigate();
-    const [isLogin, setIsLogin] = useState(cookies.get("auth-token"));
+    const {isLogin, setIsLogin} = useContext(userLoginContext);
 
     const handleSetIsLogin = (val)=>{
         setIsLogin(val);
