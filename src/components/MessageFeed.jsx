@@ -1,6 +1,6 @@
 import {darkScrollbar, Stack} from "@mui/material";
 import {useEffect, useRef, useState} from "react";
-import {collection, getDocs, query, limit, orderBy} from "firebase/firestore";
+import {collection, getDocs, query, limit, orderBy, onSnapshot} from "firebase/firestore";
 import {db, auth} from "../firebase-config";
 
 
@@ -41,15 +41,32 @@ const MessageFeed = (props) => {
     };
 
 
+    const q = query(collection(db, roomName), orderBy("createdAt", "asc"), limit(50))
+
     const getRoomMessages = async ()=>{
         let msgs = [];
-        const q = query(collection(db, roomName), orderBy("createdAt", "asc"), limit(50))
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             msgs.push(doc.data());
         });
         return msgs;
     }
+
+    const observer = () => onSnapshot(q, (snapshot)=>{
+        let msgs = [];
+        snapshot.forEach(
+            (s)=> {
+                msgs.push(s.data());
+            }
+        );
+        if(JSON.stringify(msgs) !== JSON.stringify(messages)){
+            console.log("heree i am")
+            setMesages(msgs);
+        }
+
+    });
+
+    observer();
 
     useEffect(()=>{
         bottomRef.current?.scrollIntoView({behavior: 'smooth'});
@@ -58,7 +75,6 @@ const MessageFeed = (props) => {
     useEffect(()=>{
         getRoomMessages().then(
             (res)=>{
-                console.log("msg ::::: ", res);
                 setMesages(res);
             }
         )
@@ -73,13 +89,13 @@ const MessageFeed = (props) => {
                 sx={{height:"380px", border:"none", overflow: "auto"}}>
 
                 {
-                    messages.map((msg)=> (
+                    messages.map((msg, index)=> (
                             msg?.user === auth.currentUser.email ?
-                            <div style={currentUserMsg}>
+                            <div key={index} style={currentUserMsg}>
                                 <p style={currentUserFormat}>{msg.text}</p>
                             </div>
                         :
-                                <div style={otherUserMsg}>
+                                <div key={index} style={otherUserMsg}>
                                     <p style={otherUserFormat}>{msg.text}</p>
                                 </div>
                         )

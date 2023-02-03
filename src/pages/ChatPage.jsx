@@ -17,14 +17,15 @@ const ChatPage = (props) => {
 
     const handleSendMessage = async (e) => {
         try{
-            if(newMsg !== "" || '\n' || '\n\n'){
+            // if(newMsg !== "" && newMsg !== '\n' && newMsg !== '\n\n' && newMsg !== " " && newMsg !== null){
+            if(newMsg !== ""){
                 await addDoc(messageRef, {
                     text: newMsg,
                     user: auth.currentUser.email,
                     createdAt: new Date()
                 });
-                setNewMsg("");
             }
+            setNewMsg("");
         }
         catch (e) {
             console.error(e)
@@ -64,7 +65,9 @@ const ChatPage = (props) => {
                         <Textarea
                             sx={{borderRadius:"50px", width:"800px"}}
                             placeholder="Type Something..."
-                            onChange={(e)=>setNewMsg(e.target.value)} />
+                            onChange={(e)=>setNewMsg(e.target.value)}
+                            value={newMsg}
+                            />
                         <IconButton
                             onClick={handleSendMessage} >
                             <SendIcon />
