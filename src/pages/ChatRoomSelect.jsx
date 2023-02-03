@@ -25,7 +25,7 @@ const ChatRoomSelect = (props) => {
         if(!isLogin){
             navigate('/auth');
         }
-    },[isLogin])
+    },[isLogin, navigate])
 
     return(
         <div style={{width:"100%",

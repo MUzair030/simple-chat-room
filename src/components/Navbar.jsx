@@ -18,7 +18,6 @@ const Navbar = () => {
     const handleSignout = async ()=>{
         await signOut(auth);
         cookies.remove("auth-token");
-        setIsLogin(false);
         navigate('/auth');
     }
 

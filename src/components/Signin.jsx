@@ -29,7 +29,7 @@ const Signin = (props) => {
         e.preventDefault();
         try{
             const result = await signInWithEmailAndPassword(auth, email, password);
-            cookies.set("auth-token", result.user.refreshToken);
+            cookies.set("auth-token", result.user.refreshToken, {path:"/"});
             handleSetIsLogin(true);
         }
         catch (e) {

@@ -1,11 +1,11 @@
-import {Box, Button, Stack, IconButton} from "@mui/material";
+import {Box, Stack, IconButton} from "@mui/material";
 import {Textarea} from "@mui/joy";
 import SendIcon from '@mui/icons-material/Send';
 import {useParams} from "react-router-dom";
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 import {useState, useContext, useEffect} from "react";
-import {addDoc, collection, serverTimestamp} from "firebase/firestore";
-import {app, db, auth} from "../firebase-config";
+import {addDoc, collection} from "firebase/firestore";
+import {db, auth} from "../firebase-config";
 import {MessageFeed} from "../components";
 import {userLoginContext} from "../contexts/userLoginContext";
 import {useNavigate} from "react-router-dom";
@@ -23,7 +23,7 @@ const ChatPage = (props) => {
         if(!isLogin){
             navigate(`/auth`);
         }
-    }, [isLogin]);
+    }, [isLogin, navigate]);
 
     const handleSendMessage = async () => {
         try{
